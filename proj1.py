@@ -8,35 +8,6 @@ from uninformedSearch import *
         # To create a vertex, create a class that contains a spot for the  
     # To load the graph weights, call add edge for all edges
 
-def initialize_vertices(g, E, directed=False):
-    """Make a graph instance based on a sequence of edge tuples.
-    Edges can be either of from (origin,destination) or
-    (origin,destination,element). Vertex set is presume to be those
-    incident to at least one edge.
-    vertex labels are assumed to be hashable.
-    """
-
-    wallPos = (26, 27, 28, 29, 37, 40, 47, 48, 51, 61, 62)
-
-    V = set()
-    for e in E:
-        V.add(e[0])
-        V.add(e[1])
-
-    verts = {}  # map from vertex label to Vertex instance
-    for v in V:
-        verts[v] = g.insert_vertex(v)
-        if verts[v].get_id() in wallPos:
-            verts[v].set_visitOrder('##')
-
-    return (g, verts)
-    
-def construct_Graph_From_Edges(verts, E, g):
-    for e in E:
-        g.insert_edge(verts[e[0]],verts[e[1]], e[2])
-
-    return g
-
 def construct_Edge_List():
   #"""Return the weighted, undirected graph from Figure 14.14 of DSAP."""
     E = []
@@ -60,29 +31,13 @@ def construct_Edge_List():
 
     return E
 
-def construct_graph():
-    g = Graph()
-    E = construct_Edge_List()
-    graphAndVertices = initialize_vertices(g, E) 
-    g = graphAndVertices[0]
-    verts = graphAndVertices[1]
-
-    E = remove_Wall_Edges(E)
-    g = construct_Graph_From_Edges(verts, E, g)
-    return g
-
-def remove_Wall_Edges(E):
-    #The cells that the wall is present in
-    wallPos = (26, 27, 28, 29, 37, 40, 47, 48, 51, 61, 62)
-
-    E = [e for e in E if not e[0] in wallPos]
-    E = [e for e in E if not e[1] in wallPos]
-
-    return E
-
 
 def main():
-    board = construct_graph()
+    wallPos = (26, 27, 28, 29, 37, 40, 47, 48, 51, 61, 62)
+    E = construct_Edge_List()
+
+    board = Graph()
+    board.construct_graph_from_edges(E, wallPos)
 
     startPoint = board.getVertexAtPosition(49)
     board.set_goalVertex(board.getVertexAtPosition(10))

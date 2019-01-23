@@ -142,7 +142,45 @@ class Graph:
                 print('\n')
         print('\n')
             
+    def initialize_vertices(self, E):
+        """Make a graph instance based on a sequence of edge tuples.
+        Edges can be either of from (origin,destination) or
+        (origin,destination,element). Vertex set is presume to be those
+        incident to at least one edge.
+        vertex labels are assumed to be hashable.
+        """
+
+        wallPos = (26, 27, 28, 29, 37, 40, 47, 48, 51, 61, 62)
+
+        V = set()
+        for e in E:
+            V.add(e[0])
+            V.add(e[1])
+
+        verts = {}  # map from vertex label to Vertex instance
+        for v in V:
+            verts[v] = self.insert_vertex(v)
+            if verts[v].get_id() in wallPos:
+                verts[v].set_visitOrder('##')
+
+        return (verts)        
+
+    def construct_graph_from_edges(self, E, vertexNumbers):
+        verts = self.initialize_vertices(E) 
+
+        E = self.disconnect_Vertices(E, vertexNumbers)
+        
+        for e in E:
+            self.insert_edge(verts[e[0]],verts[e[1]], e[2])
     
+    def disconnect_Vertices(self, E, vertexNumbers):
+        #The cells that the wall is present in
+
+        E = [e for e in E if not e[0] in vertexNumbers]
+        E = [e for e in E if not e[1] in vertexNumbers]
+
+        return E
+
     def __str__(self):
         output = ""
 
