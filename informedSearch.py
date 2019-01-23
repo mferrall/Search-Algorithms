@@ -10,14 +10,14 @@ def GreedyFirst(g, origin, frontier = PriorityQueue()):
         return True
     
     if g.get_visitNumber() == 0:
-        origin.setVisitOrder(g.get_visitNumber())
+        origin.set_visitOrder(g.get_visitNumber())
         g.increment_visitNumber()
 
     for e in g.incident_edges(origin):    # for every outgoing edge from u
         v = e.opposite(origin)
         if v.visitOrder() == '[]':
             frontier.push(v, windyManhattanDistance(v, g.goalVertex()))
-            v.setVisitOrder(g.get_visitNumber())
+            v.set_visitOrder(g.get_visitNumber())
             g.increment_visitNumber()
 
     found = False
@@ -59,14 +59,14 @@ def a_star_search(g, origin, cost = 0, frontier = PriorityQueue()):
         return True
     
     if g.get_visitNumber() == 0:
-        origin.setVisitOrder(g.get_visitNumber())
+        origin.set_visitOrder(g.get_visitNumber())
         g.increment_visitNumber()
 
     for e in g.incident_edges(origin):    # for every outgoing edge from u
         v = e.opposite(origin)
         if v.visitOrder() == '[]':
             frontier.push(v, cost + e.weight() + windyManhattanDistance(v, g.goalVertex()))
-            v.setVisitOrder(g.get_visitNumber())
+            v.set_visitOrder(g.get_visitNumber())
             g.increment_visitNumber()
 
     found = False

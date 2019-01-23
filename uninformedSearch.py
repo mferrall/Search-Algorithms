@@ -11,14 +11,14 @@ def DFS(g, origin, frontier = deque()):
         return True
     
     if g.get_visitNumber() == 0:
-        origin.setVisitOrder(g.get_visitNumber())
+        origin.set_visitOrder(g.get_visitNumber())
         g.increment_visitNumber()
 
     for e in g.incident_edges(origin):    # for every outgoing edge from u
         v = e.opposite(origin)
         if v.visitOrder() == '[]':
             frontier.append(v)
-            v.setVisitOrder(g.get_visitNumber())
+            v.set_visitOrder(g.get_visitNumber())
             g.increment_visitNumber()
 
     found = False
@@ -38,14 +38,14 @@ def BFS(g, origin, frontier = deque()):
         return True
     
     if g.get_visitNumber() == 0:
-        origin.setVisitOrder(g.get_visitNumber())
+        origin.set_visitOrder(g.get_visitNumber())
         g.increment_visitNumber()
 
     for e in g.incident_edges(origin):    # for every outgoing edge from u
         v = e.opposite(origin)
         if v.visitOrder() == '[]':
             frontier.append(v)
-            v.setVisitOrder(g.get_visitNumber())
+            v.set_visitOrder(g.get_visitNumber())
             g.increment_visitNumber()
 
     found = False
@@ -65,7 +65,7 @@ def progressive_deepening(g, origin, depth_limit, frontier = [], depth = 0):
         return True
     
     if g.get_visitNumber() == 0:
-        origin.setVisitOrder(g.get_visitNumber())
+        origin.set_visitOrder(g.get_visitNumber())
         g.increment_visitNumber()
 
     if depth < depth_limit:
@@ -73,7 +73,7 @@ def progressive_deepening(g, origin, depth_limit, frontier = [], depth = 0):
             v = e.opposite(origin)
             if v.visitOrder() == '[]': 
                 frontier.append(v)
-                v.setVisitOrder(g.get_visitNumber())
+                v.set_visitOrder(g.get_visitNumber())
                 g.increment_visitNumber()
 
     found = False
@@ -93,14 +93,14 @@ def UCS(g, origin, cost = 0, frontier = PriorityQueue()):
         return True
     
     if g.get_visitNumber() == 0:
-        origin.setVisitOrder(g.get_visitNumber())
+        origin.set_visitOrder(g.get_visitNumber())
         g.increment_visitNumber()
 
     for e in g.incident_edges(origin):    # for every outgoing edge from u
         v = e.opposite(origin)
         if v.visitOrder() == '[]':
             frontier.push(v, cost + e.weight())
-            v.setVisitOrder(g.get_visitNumber())
+            v.set_visitOrder(g.get_visitNumber())
             g.increment_visitNumber()
 
     found = False

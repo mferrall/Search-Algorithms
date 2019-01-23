@@ -27,13 +27,13 @@ def initialize_vertices(g, E, directed=False):
     for v in V:
         verts[v] = g.insert_vertex(v)
         if verts[v].get_id() in wallPos:
-            verts[v].setVisitOrder('##')
+            verts[v].set_visitOrder('##')
 
     return (g, verts)
     
 def construct_Graph_From_Edges(verts, E, g):
     for e in E:
-        g.insert_edge(verts[e[0]],verts[e[1]], e[2], e[3])
+        g.insert_edge(verts[e[0]],verts[e[1]], e[2])
 
     return g
 
@@ -47,16 +47,16 @@ def construct_Edge_List():
 
             # West edge
             if column > 0:
-                E.append((vertexNumber, vertexNumber - 1, 'West', 2))
+                E.append((vertexNumber, vertexNumber - 1, 2))
             # North edge
             if row > 0:
-                E.append((vertexNumber, vertexNumber - 11, 'North', 1))
+                E.append((vertexNumber, vertexNumber - 11, 1))
             # East edge
             if column < 10:
-                E.append((vertexNumber, vertexNumber + 1, 'East', 2))
+                E.append((vertexNumber, vertexNumber + 1, 2))
             # South edge
             if row < 7:
-                E.append((vertexNumber, vertexNumber + 11, 'South', 3))
+                E.append((vertexNumber, vertexNumber + 11, 3))
 
     return E
 

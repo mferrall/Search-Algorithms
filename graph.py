@@ -16,7 +16,7 @@ class Vertex:
     def visitOrder(self):
         return self._visitOrder
 
-    def setVisitOrder(self, inputOrder):
+    def set_visitOrder(self, inputOrder):
         self._visitOrder = inputOrder
 
     def get_id(self):
@@ -33,13 +33,11 @@ class Vertex:
         
     
 class Edge:
-    __slots__ = '_origin','_destination', '_direction', '_weight'
 
-    def __init__(self, inputOrigin, inputDestination, inputDirection, inputWeight):
+    def __init__(self, inputOrigin, inputDestination, inputWeight):
         self._origin = inputOrigin
         self._destination = inputDestination
         self._weight = inputWeight
-        self._direction = inputDirection
     
     def endpoints(self):
         return (self._origin, self._destination)
@@ -57,7 +55,7 @@ class Edge:
         return hash( (self._origin, self._destination))
 
     def __str__(self):
-        return '{' + self._direction + ' ' + str(self._destination) + ' w= ' + str(self._weight) + '}'
+        return '{' + str(self._destination) + ' w= ' + str(self._weight) + '}'
 
     __repr__ = __str__
     
@@ -88,12 +86,11 @@ class Graph:
     def get_visitNumber(self):
         return self._visitNumber
 
-    def insert_edge(self, inputOrigin, inputDestination, inputDirection, inputWeight):
+    def insert_edge(self, inputOrigin, inputDestination, inputWeight):
         # Insert and return a new edge from u to v with auxillary element x
         
-        e = Edge(inputOrigin, inputDestination, inputDirection, inputWeight)
+        e = Edge(inputOrigin, inputDestination, inputWeight)
         self._outgoing[inputOrigin][inputDestination] = e
-        #self._incoming[inputDestination][inputOrigin] = e
 
     def reset_board(self):
         self._visitNumber = 0
@@ -102,22 +99,9 @@ class Graph:
         for v in V:
             v.resetVertex()
 
-
-    def vertex_count(self):
-        # Returns the number of vertices in the graph
-        return len(self._outgoing)
-
     def vertices(self):
         # Returns the vertices in the graph
         return self._outgoing.keys()
-
-    def edge_count(self):
-        # Returns the number of edges in the graph
-        total = sum(len(self._outgoing) for v in self._outgoing)
-        return total
-
-        # avoid double counting edges for undirected graph
-        #return total if self.is_directed else total // 2
     
     def edges(self):
         # returns a set of all edges of the graph
@@ -126,18 +110,6 @@ class Graph:
         for e in self._outgoing.values():
             result.update(e.values())
         return result
-    
-    def get_edge(self, u, v):
-        # Return edge from u to v, or none if not adjacent
-        return self._outgoing.get(v)
-    
-    def degree(self, v, outgoing = True):
-      # Returns number of outgoing edges incident to vertex v
-      # If the graph is directed, optional parameter used to count incoming edges
-
-      #adj = self._outgoing if outgoing else self._incoming
-      adj = self._outgoing
-      return len(adj[v])
 
     def incident_edges(self, v, outgoing = True):
         # Returns all outoing edges incident to vertex v
@@ -168,7 +140,7 @@ class Graph:
             count += 1
             if count % 11 == 0:
                 print('\n')
-        print('\n\n')
+        print('\n')
             
     
     def __str__(self):
