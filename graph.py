@@ -1,6 +1,7 @@
 from collections import OrderedDict
 
-
+# Custom class that ensures that any nested dictionaries are also ordered
+# Maintains the order of edges
 class NestedOrderedDict(OrderedDict):
     def __missing__(self, key):
         val = self[key] = NestedOrderedDict()
@@ -8,15 +9,15 @@ class NestedOrderedDict(OrderedDict):
 
 class Vertex:
 
-    def __init__(self, inputID):
+    def __init__(self, inputID = ""):
         self._id = inputID
         self._visitOrder = '[]'
 
-    def setVisitOrder(self, inputOrder):
-        self._visitOrder = inputOrder
-
     def visitOrder(self):
         return self._visitOrder
+
+    def setVisitOrder(self, inputOrder):
+        self._visitOrder = inputOrder
 
     def get_id(self):
         return self._id
@@ -47,7 +48,7 @@ class Edge:
         # Returns the vertex opposite v on this edge
         return self._destination if v is self._origin else self._origin
     
-    def element(self):
+    def weight(self):
         # Returns the element associated with this edge
         return self._weight
     
@@ -64,11 +65,28 @@ class Edge:
 class Graph:
     # Simple graph class using an adjacency list
 
-
     def __init__(self, directed = False):
         self._outgoing = NestedOrderedDict()
-        # only create second map for directed graph; use alias for undirected
-        #self._incoming = {} if directed else self._outgoing
+        self._visitNumber = 0 #tracks the number of nodes that have been added to frontier
+        self._goalVertex = Vertex()
+
+    def set_goalVertex(self, v):
+        self._goalVertex = v
+
+    def goalVertex(self):
+        return self._goalVertex
+    
+    def is_goal_vertex(self, v):
+        if self._goalVertex == v:
+            return True
+        else:
+            return False
+
+    def increment_visitNumber(self):
+        self._visitNumber += 1
+    
+    def get_visitNumber(self):
+        return self._visitNumber
 
     def insert_edge(self, inputOrigin, inputDestination, inputDirection, inputWeight):
         # Insert and return a new edge from u to v with auxillary element x
@@ -78,12 +96,13 @@ class Graph:
         #self._incoming[inputDestination][inputOrigin] = e
 
     def reset_board(self):
+        self._visitNumber = 0
+        
         V = self.vertices()
-
         for v in V:
             v.resetVertex()
 
-    
+
     def vertex_count(self):
         # Returns the number of vertices in the graph
         return len(self._outgoing)
@@ -149,6 +168,7 @@ class Graph:
             count += 1
             if count % 11 == 0:
                 print('\n')
+        print('\n\n')
             
     
     def __str__(self):
