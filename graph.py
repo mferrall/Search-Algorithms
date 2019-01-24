@@ -9,15 +9,15 @@ class NestedOrderedDict(OrderedDict):
 
 class Vertex:
 
-    def __init__(self, inputID = ""):
-        self._id = inputID
-        self._visitOrder = '[]'
+    def __init__(self, input_ID = ""):
+        self._id = input_ID
+        self._visit_order = '[]'
 
-    def visitOrder(self):
-        return self._visitOrder
+    def visit_order(self):
+        return self._visit_order
 
     def set_visitOrder(self, inputOrder):
-        self._visitOrder = inputOrder
+        self._visit_order = inputOrder
 
     def get_id(self):
         return self._id
@@ -25,19 +25,19 @@ class Vertex:
     def __str__(self):
         return str(self._id)
 
-    def resetVertex(self):
-        if self._visitOrder != '##':
-            self._visitOrder = '[]'
+    def reset_vertex(self):
+        if self._visit_order != '##':
+            self._visit_order = '[]'
 
     __repr__ = __str__
         
     
 class Edge:
 
-    def __init__(self, inputOrigin, inputDestination, inputWeight):
-        self._origin = inputOrigin
-        self._destination = inputDestination
-        self._weight = inputWeight
+    def __init__(self, input_origin, input_destination, input_weight):
+        self._origin = input_origin
+        self._destination = input_destination
+        self._weight = input_weight
     
     def endpoints(self):
         return (self._origin, self._destination)
@@ -61,43 +61,43 @@ class Edge:
     
     
 class Graph:
-    # Simple graph class using an adjacency list
+    # Simple graph class using an adjacency Map
 
-    def __init__(self, directed = False):
+    def __init__(self):
         self._outgoing = NestedOrderedDict()
-        self._visitNumber = 0 #tracks the number of nodes that have been added to frontier
-        self._goalVertex = Vertex()
+        self._visit_number = 0 #tracks the number of nodes that have been added to frontier
+        self._goal_vertex = Vertex()
 
-    def set_goalVertex(self, v):
-        self._goalVertex = v
+    def set_goal_vertex(self, v):
+        self._goal_vertex = v
 
-    def goalVertex(self):
-        return self._goalVertex
+    def goal_vertex(self):
+        return self._goal_vertex
     
     def is_goal_vertex(self, v):
-        if self._goalVertex == v:
+        if self._goal_vertex == v:
             return True
         else:
             return False
 
     def increment_visitNumber(self):
-        self._visitNumber += 1
+        self._visit_number += 1
     
     def get_visitNumber(self):
-        return self._visitNumber
+        return self._visit_number
 
-    def insert_edge(self, inputOrigin, inputDestination, inputWeight):
+    def _insert_edge(self, input_origin, input_destination, input_weight):
         # Insert and return a new edge from u to v with auxillary element x
         
-        e = Edge(inputOrigin, inputDestination, inputWeight)
-        self._outgoing[inputOrigin][inputDestination] = e
+        e = Edge(input_origin, input_destination, input_weight)
+        self._outgoing[input_origin][input_destination] = e
 
     def reset_board(self):
-        self._visitNumber = 0
+        self._visit_number = 0
         
         V = self.vertices()
         for v in V:
-            v.resetVertex()
+            v.reset_vertex()
 
     def vertices(self):
         # Returns the vertices in the graph
@@ -115,42 +115,37 @@ class Graph:
         # Returns all outoing edges incident to vertex v
         # If graph is directed, optional parameter used to request incoming edge
 
-        #adj = self._outgoing if outgoing else self._incoming
         for edge in self._outgoing[v].values():
             yield edge
 
-    def insert_vertex(self, x = None):
+    def _insert_vertex(self, input_id):
         # insert and return a new Vertex with element x
 
-        v = Vertex(x)
+        v = Vertex(input_id)
         self._outgoing[v] = {}
-        #if self.is_directed():
-        #    self._incoming[v] = {}
         return v        
 
-    def getVertexAtPosition(self, posNumber):
-        for v in self._outgoing.keys():
-            if v.get_id() == posNumber:
+    def get_vertex_at_position(self, pos_number):
+        for v in self.vertices():
+            if v.get_id() == pos_number:
                 return v    
 
-    def boardPrint(self):
+    def graph_print(self):
         count = 0
         for v in self.vertices():
-            print(str(v.visitOrder()).zfill(2) + '  ', end = ""),
+            print(str(v.visit_order()).zfill(2) + '  ', end = ""),
             count += 1
             if count % 11 == 0:
                 print('\n')
         print('\n')
             
-    def initialize_vertices(self, E):
+    def _initialize_vertices(self, E, wall_position):
         """Make a graph instance based on a sequence of edge tuples.
         Edges can be either of from (origin,destination) or
         (origin,destination,element). Vertex set is presume to be those
         incident to at least one edge.
         vertex labels are assumed to be hashable.
         """
-
-        wallPos = (26, 27, 28, 29, 37, 40, 47, 48, 51, 61, 62)
 
         V = set()
         for e in E:
@@ -159,25 +154,25 @@ class Graph:
 
         verts = {}  # map from vertex label to Vertex instance
         for v in V:
-            verts[v] = self.insert_vertex(v)
-            if verts[v].get_id() in wallPos:
+            verts[v] = self._insert_vertex(v)
+            if verts[v].get_id() in wall_position:
                 verts[v].set_visitOrder('##')
 
         return (verts)        
 
-    def construct_graph_from_edges(self, E, vertexNumbers):
-        verts = self.initialize_vertices(E) 
+    def construct_graph_from_edges(self, E, wall_position):
+        verts = self._initialize_vertices(E, wall_position) 
 
-        E = self.disconnect_Vertices(E, vertexNumbers)
+        E = self.disconnect_vertices(E, wall_position)
         
         for e in E:
-            self.insert_edge(verts[e[0]],verts[e[1]], e[2])
+            self._insert_edge(verts[e[0]],verts[e[1]], e[2])
     
-    def disconnect_Vertices(self, E, vertexNumbers):
+    def disconnect_vertices(self, E, wall_position):
         #The cells that the wall is present in
 
-        E = [e for e in E if not e[0] in vertexNumbers]
-        E = [e for e in E if not e[1] in vertexNumbers]
+        E = [e for e in E if not e[0] in wall_position]
+        E = [e for e in E if not e[1] in wall_position]
 
         return E
 

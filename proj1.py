@@ -8,7 +8,7 @@ from uninformedSearch import *
         # To create a vertex, create a class that contains a spot for the  
     # To load the graph weights, call add edge for all edges
 
-def construct_Edge_List():
+def construct_edge_list():
   #"""Return the weighted, undirected graph from Figure 14.14 of DSAP."""
     E = []
 
@@ -33,48 +33,47 @@ def construct_Edge_List():
 
 
 def main():
-    wallPos = (26, 27, 28, 29, 37, 40, 47, 48, 51, 61, 62)
-    E = construct_Edge_List()
+    wall_pos = (26, 27, 28, 29, 37, 40, 47, 48, 51, 61, 62)
+    E = construct_edge_list()
 
     board = Graph()
-    board.construct_graph_from_edges(E, wallPos)
+    board.construct_graph_from_edges(E, wall_pos)
 
-    startPoint = board.getVertexAtPosition(49)
-    board.set_goalVertex(board.getVertexAtPosition(10))
+    start_point = board.get_vertex_at_position(49)
+    board.set_goal_vertex(board.get_vertex_at_position(10))
 
     print('BFS')
-    BFS(board, startPoint)
-    board.boardPrint()
+    BFS(board, start_point)
+    board.graph_print()
     board.reset_board()
 
     print('DFS')
-    DFS(board, startPoint)
-    board.boardPrint()
-
+    DFS(board, start_point)
+    board.graph_print()
     board.reset_board()
 
     print('Progressive Deepening')
     depth_limit = 0
-    while (progressive_deepening(board, startPoint, depth_limit) == False):
+    while (progressive_deepening(board, start_point, depth_limit) == False):
         board.reset_board()
         depth_limit += 1
     print('Level ' + str(depth_limit))
-    board.boardPrint()
+    board.graph_print()
     board.reset_board()
 
     print('UCS')
-    UCS(board, startPoint)
-    board.boardPrint()
+    UCS(board, start_point)
+    board.graph_print()
     board.reset_board()
 
     print('Greedy')
-    GreedyFirst(board, startPoint)
-    board.boardPrint()
+    greedy_first(board, start_point)
+    board.graph_print()
     board.reset_board()
 
     print('A*')
-    a_star_search(board, startPoint)
-    board.boardPrint()
+    a_star_search(board, start_point)
+    board.graph_print()
     board.reset_board()
 
 if __name__ == '__main__':

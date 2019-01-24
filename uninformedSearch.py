@@ -16,7 +16,7 @@ def DFS(g, origin, frontier = deque()):
 
     for e in g.incident_edges(origin):    # for every outgoing edge from u
         v = e.opposite(origin)
-        if v.visitOrder() == '[]':
+        if v.visit_order() == '[]':
             frontier.append(v)
             v.set_visitOrder(g.get_visitNumber())
             g.increment_visitNumber()
@@ -43,7 +43,7 @@ def BFS(g, origin, frontier = deque()):
 
     for e in g.incident_edges(origin):    # for every outgoing edge from u
         v = e.opposite(origin)
-        if v.visitOrder() == '[]':
+        if v.visit_order() == '[]':
             frontier.append(v)
             v.set_visitOrder(g.get_visitNumber())
             g.increment_visitNumber()
@@ -71,7 +71,7 @@ def progressive_deepening(g, origin, depth_limit, frontier = [], depth = 0):
     if depth < depth_limit:
         for e in g.incident_edges(origin):    # for every outgoing edge from u
             v = e.opposite(origin)
-            if v.visitOrder() == '[]': 
+            if v.visit_order() == '[]': 
                 frontier.append(v)
                 v.set_visitOrder(g.get_visitNumber())
                 g.increment_visitNumber()
@@ -98,7 +98,7 @@ def UCS(g, origin, cost = 0, frontier = PriorityQueue()):
 
     for e in g.incident_edges(origin):    # for every outgoing edge from u
         v = e.opposite(origin)
-        if v.visitOrder() == '[]':
+        if v.visit_order() == '[]':
             frontier.push(v, cost + e.weight())
             v.set_visitOrder(g.get_visitNumber())
             g.increment_visitNumber()
