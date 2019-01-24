@@ -130,12 +130,12 @@ class Graph:
             if v.get_id() == pos_number:
                 return v    
 
-    def graph_print(self):
+    def graph_print(self, column_count):
         count = 0
         for v in self.vertices():
             print(str(v.visit_order()).zfill(2) + '  ', end = ""),
             count += 1
-            if count % 11 == 0:
+            if count % column_count == 0:
                 print('\n')
         print('\n')
             
