@@ -2,6 +2,7 @@
 from graph import *
 from informedSearch import *
 from uninformedSearch import *
+import datetime
 
 # To Solve the Map for BFS UCS, DFS, Greedy Best-First search, A* search, and Iterative deepening search, initialize a graph with edge weights N = 1, E = 2, W = 2, S = 3, starting position in the middle of the graph, and solve using each method
     # To Initialize the graph, create a vertex, edge, and graph data structure
@@ -50,13 +51,17 @@ def main():
     start_point = board.get_vertex_at_position(start_pos)
     board.set_goal_vertex(board.get_vertex_at_position(goal_pos))
 
+    now = datetime.datetime.now()
+
     print('BFS')
     BFS(board, start_point)
+    print(now.strftime("%Y-%m-%d %H:%M"))
     board.graph_print(column_count)
     board.reset_board()
 
     print('DFS')
     DFS(board, start_point)
+    print(now.strftime("%Y-%m-%d %H:%M"))
     board.graph_print(column_count)
     board.reset_board()
 
@@ -65,22 +70,27 @@ def main():
     while (progressive_deepening(board, start_point, depth_limit) == False):
         board.reset_board()
         depth_limit += 1
-    print('Level ' + str(depth_limit))
-    board.graph_print(column_count)
+        print('Level ' + str(depth_limit))
+        print(now.strftime("%Y-%m-%d %H:%M"))
+        board.graph_print(column_count)
+    
     board.reset_board()
 
     print('UCS')
     UCS(board, start_point)
+    print(now.strftime("%Y-%m-%d %H:%M"))
     board.graph_print(column_count)
     board.reset_board()
 
     print('Greedy')
     greedy_first(board, start_point)
+    print(now.strftime("%Y-%m-%d %H:%M"))
     board.graph_print(column_count)
     board.reset_board()
 
     print('A*')
     a_star_search(board, start_point)
+    print(now.strftime("%Y-%m-%d %H:%M"))
     board.graph_print(column_count)
     board.reset_board()
 
