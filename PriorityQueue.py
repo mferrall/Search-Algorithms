@@ -18,3 +18,7 @@ class PriorityQueue:
     def pop(self):
         # Pops the entire tuple from the queue, user must extract object on return, allows tracking of the priority value
         return heapq.heappop(self._queue)
+
+    def peek_cost(self):
+        # Returns the cost of the top node
+        return self._queue[0][0]
