@@ -98,7 +98,8 @@ def UCS(g, origin, cost = 0, frontier = PriorityQueue()):
     found = False
     while found == False:
         if frontier:      
-            topVertex = frontier.pop()
-            found = UCS(g, topVertex[2], topVertex[0], frontier)
+            next_cost = frontier.peek_cost()
+            next_vertex = frontier.pop()
+            found = UCS(g, next_vertex, next_cost, frontier)
     
     return found
