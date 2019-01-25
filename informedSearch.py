@@ -1,10 +1,9 @@
 from PriorityQueue import *
 
 def greedy_first(input_graph, origin, frontier = PriorityQueue()):
-    """Perform DFS of the undiscovered portion of Graph input_graph starting at Vertex u.
-    discovered is a dictionary mapping each vertex to the edge that was used to
-    discover it during the DFS. (u should be "discovered" prior to the call.)
-    Newly discovered vertices will be added to the dictionary as a result.
+    """Conducts a greedy first search of the graph.  Goal vertex is stored in the graph object
+    Returns true once the object is found
+    Uses a manhattan distance that is weighted by directional cost
     """
     if input_graph.is_goal_vertex(origin):
         return True
@@ -13,7 +12,7 @@ def greedy_first(input_graph, origin, frontier = PriorityQueue()):
         origin.set_visitOrder(input_graph.get_visitNumber())
         input_graph.increment_visitNumber()
 
-    for e in input_graph.incident_edges(origin):    # for every edge from origin
+    for e in input_graph.incident_edges(origin):  
         v = e.opposite(origin)
         if v.visit_order() == '[]':
             frontier.push(v, windy_manhattan_distance(v, input_graph.goal_vertex()))
@@ -22,13 +21,15 @@ def greedy_first(input_graph, origin, frontier = PriorityQueue()):
 
     found = False
     while found == False:
-        if frontier:       # recursively explore
+        if frontier:      
             top_vertex = frontier.pop()
             found = greedy_first(input_graph, top_vertex[2], frontier)
     
     return found
 
 def windy_manhattan_distance(v, goal_vertex):
+    # Manhattan distance that is weighted by directional cost
+    # Moving north costs 1, south 3, east and west are both 2
     current_pos = to_grid_coord(v.get_id())
     goal_pos = to_grid_coord(goal_vertex.get_id())
     distance = 0
@@ -45,15 +46,14 @@ def windy_manhattan_distance(v, goal_vertex):
     return distance
 
 def to_grid_coord(position):
+    # Returns a row, column tuple from an input vertex id
     column = position % 11
     row = position // 11
     return (row, column)
 
 def a_star_search(input_graph, origin, cost = 0, frontier = PriorityQueue()):
-    """Perform DFS of the undiscovered portion of Graph input_graph starting at Vertex u.
-    discovered is a dictionary mapping each vertex to the edge that was used to
-    discover it during the DFS. (u should be "discovered" prior to the call.)
-    Newly discovered vertices will be added to the dictionary as a result.
+    """Conducts an A* search of the graph.  Goal vertex is stored in the graph object
+    Returns true once the object is found and the estimated cost of the top vertex in the queue is greater than the current cost
     """
     if input_graph.is_goal_vertex(origin):
         return True
@@ -62,7 +62,7 @@ def a_star_search(input_graph, origin, cost = 0, frontier = PriorityQueue()):
         origin.set_visitOrder(input_graph.get_visitNumber())
         input_graph.increment_visitNumber()
 
-    for e in input_graph.incident_edges(origin):    # for every outgoing edge from u
+    for e in input_graph.incident_edges(origin):    
         v = e.opposite(origin)
         if v.visit_order() == '[]':
             frontier.push(v, cost + e.weight() + windy_manhattan_distance(v, input_graph.goal_vertex()))
@@ -71,7 +71,7 @@ def a_star_search(input_graph, origin, cost = 0, frontier = PriorityQueue()):
 
     found = False
     while found == False:
-        if frontier:       # recursively explore
+        if frontier:     
             top_vertex = frontier.pop()
             found = a_star_search(input_graph, top_vertex[2], top_vertex[0] - windy_manhattan_distance(top_vertex[2], input_graph.goal_vertex()), frontier)
     

@@ -2,10 +2,8 @@ from collections import deque
 from PriorityQueue import *
 
 def DFS(g, origin, frontier = deque()):
-    """Perform DFS of the undiscovered portion of Graph g starting at Vertex u.
-    discovered is a dictionary mapping each vertex to the edge that was used to
-    discover it during the DFS. (u should be "discovered" prior to the call.)
-    Newly discovered vertices will be added to the dictionary as a result.
+    """Conducts a Depth First Search of the graph.  Goal vertex is stored in the graph object
+    Returns true once the object is found.  Returns false if not in graph
     """
     if g.is_goal_vertex(origin):
         return True
@@ -14,7 +12,7 @@ def DFS(g, origin, frontier = deque()):
         origin.set_visitOrder(g.get_visitNumber())
         g.increment_visitNumber()
 
-    for e in g.incident_edges(origin):    # for every outgoing edge from u
+    for e in g.incident_edges(origin):  
         v = e.opposite(origin)
         if v.visit_order() == '[]':
             frontier.append(v)
@@ -23,16 +21,14 @@ def DFS(g, origin, frontier = deque()):
 
     found = False
     while found == False:
-        if frontier:       # recursively explore
+        if frontier:       
             found = DFS(g, frontier.pop(), frontier)
     
     return found
 
 def BFS(g, origin, frontier = deque()):
-    """Perform DFS of the undiscovered portion of Graph g starting at Vertex u.
-    discovered is a dictionary mapping each vertex to the edge that was used to
-    discover it during the DFS. (u should be "discovered" prior to the call.)
-    Newly discovered vertices will be added to the dictionary as a result.
+    """Conducts a Breadth First Search of the graph.  Goal vertex is stored in the graph object
+    Returns true once the object is found.  Returns false if not in graph
     """
     if g.is_goal_vertex(origin):
         return True
@@ -41,7 +37,7 @@ def BFS(g, origin, frontier = deque()):
         origin.set_visitOrder(g.get_visitNumber())
         g.increment_visitNumber()
 
-    for e in g.incident_edges(origin):    # for every outgoing edge from u
+    for e in g.incident_edges(origin):  
         v = e.opposite(origin)
         if v.visit_order() == '[]':
             frontier.append(v)
@@ -50,16 +46,14 @@ def BFS(g, origin, frontier = deque()):
 
     found = False
     while found == False:
-        if frontier:       # recursively explore
+        if frontier:    
             found = BFS(g, frontier.popleft(), frontier)
     
     return found
 
 def progressive_deepening(g, origin, depth_limit, frontier = [], depth = 0):
-    """Perform DFS of the undiscovered portion of Graph g starting at Vertex u.
-    discovered is a dictionary mapping each vertex to the edge that was used to
-    discover it during the DFS. (u should be "discovered" prior to the call.)
-    Newly discovered vertices will be added to the dictionary as a result.
+    """Conducts a Progressive Deepening Search of the graph.  Goal vertex is stored in the graph object
+    Returns true once the object is found.  Returns false if not in graph
     """
     if g.is_goal_vertex(origin):
         return True
@@ -69,7 +63,7 @@ def progressive_deepening(g, origin, depth_limit, frontier = [], depth = 0):
         g.increment_visitNumber()
 
     if depth < depth_limit:
-        for e in g.incident_edges(origin):    # for every outgoing edge from u
+        for e in g.incident_edges(origin):  
             v = e.opposite(origin)
             if v.visit_order() == '[]': 
                 frontier.append(v)
@@ -84,10 +78,8 @@ def progressive_deepening(g, origin, depth_limit, frontier = [], depth = 0):
     return found
 
 def UCS(g, origin, cost = 0, frontier = PriorityQueue()):
-    """Perform DFS of the undiscovered portion of Graph g starting at Vertex u.
-    discovered is a dictionary mapping each vertex to the edge that was used to
-    discover it during the DFS. (u should be "discovered" prior to the call.)
-    Newly discovered vertices will be added to the dictionary as a result.
+    """Conducts a Uniform Cost Search of the graph.  Goal vertex is stored in the graph object
+    Returns true once the object is found.  Returns false if not in graph
     """
     if g.is_goal_vertex(origin):
         return True
@@ -96,7 +88,7 @@ def UCS(g, origin, cost = 0, frontier = PriorityQueue()):
         origin.set_visitOrder(g.get_visitNumber())
         g.increment_visitNumber()
 
-    for e in g.incident_edges(origin):    # for every outgoing edge from u
+    for e in g.incident_edges(origin):
         v = e.opposite(origin)
         if v.visit_order() == '[]':
             frontier.push(v, cost + e.weight())
@@ -105,7 +97,7 @@ def UCS(g, origin, cost = 0, frontier = PriorityQueue()):
 
     found = False
     while found == False:
-        if frontier:       # recursively explore
+        if frontier:      
             topVertex = frontier.pop()
             found = UCS(g, topVertex[2], topVertex[0], frontier)
     

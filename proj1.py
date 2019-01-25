@@ -4,13 +4,10 @@ from informedSearch import *
 from uninformedSearch import *
 import datetime
 
-# To Solve the Map for BFS UCS, DFS, Greedy Best-First search, A* search, and Iterative deepening search, initialize a graph with edge weights N = 1, E = 2, W = 2, S = 3, starting position in the middle of the graph, and solve using each method
-    # To Initialize the graph, create a vertex, edge, and graph data structure
-        # To create a vertex, create a class that contains a spot for the  
-    # To load the graph weights, call add edge for all edges
-
 def construct_edge_list(row_count, column_count):
-  #"""Return the weighted, undirected graph from Figure 14.14 of DSAP."""
+    # Constructs an list of edges stored as tuples, each edge contains an origin, destination, and edge weight
+    # The vertices only connect to edges one position away in a gride in the cardinal directions
+    # North edge cost = 1, East = 2, South = 3, West = 2
     E = []
     east_west_cost = 2
     north_cost = 1
@@ -68,14 +65,15 @@ def main():
     print('Progressive Deepening')
     depth_limit = 0
     while (progressive_deepening(board, start_point, depth_limit) == False):
-        board.reset_board()
         depth_limit += 1
         print('Level ' + str(depth_limit))
         print(now.strftime("%Y-%m-%d %H:%M"))
         board.graph_print(column_count)
-    
-    board.reset_board()
+        board.reset_board()
 
+    board.graph_print(column_count)
+    board.reset_board()
+    
     print('UCS')
     UCS(board, start_point)
     print(now.strftime("%Y-%m-%d %H:%M"))
