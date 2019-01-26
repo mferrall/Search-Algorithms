@@ -1,3 +1,6 @@
+"""Defines functions for traversing graph using informed search algorithms
+"""
+
 from PriorityQueue import *
 
 def greedy_first(input_graph, origin, frontier = PriorityQueue()):

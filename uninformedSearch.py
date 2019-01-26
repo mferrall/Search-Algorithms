@@ -1,10 +1,16 @@
+"""Defines functions to traverse a graph using uningormed search algorithms
+"""
+
 from collections import deque
 from PriorityQueue import *
 
-def DFS(g, origin, frontier = deque()):
+def DFS(g, origin):
     """Conducts a Depth First Search of the graph.  Goal vertex is stored in the graph object
     Returns true once the object is found.  Returns false if not in graph
     """
+
+    frontier = deque()
+
     if g.is_goal_vertex(origin):
         return True
     
@@ -22,7 +28,7 @@ def DFS(g, origin, frontier = deque()):
     found = False
     while found == False:
         if frontier:       
-            found = DFS(g, frontier.pop(), frontier)
+            found = DFS(g, frontier.pop())
     
     return found
 
@@ -51,10 +57,12 @@ def BFS(g, origin, frontier = deque()):
     
     return found
 
-def progressive_deepening(g, origin, depth_limit, frontier = [], depth = 0):
+def progressive_deepening(g, origin, depth_limit, depth = 0):
     """Conducts a Progressive Deepening Search of the graph.  Goal vertex is stored in the graph object
     Returns true once the object is found.  Returns false if not in graph
     """
+    frontier = []
+
     if g.is_goal_vertex(origin):
         return True
     
@@ -73,7 +81,7 @@ def progressive_deepening(g, origin, depth_limit, frontier = [], depth = 0):
     found = False
     while found == False and depth < depth_limit and frontier:
         v = frontier.pop()
-        found = progressive_deepening(g, v, depth_limit, frontier.copy(), depth + 1)
+        found = progressive_deepening(g, v, depth_limit, depth + 1)
 
     return found
 
